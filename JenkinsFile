@@ -25,7 +25,7 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "balaakash:${env.BUILD_NUMBER}"
+        DOCKER_IMAGE = "balaakash/ultimate-cicd:${env.BUILD_NUMBER}"
         DOCKERFILE_LOCATION = "Dockerfile"
       }
       steps {
