@@ -26,7 +26,7 @@ pipeline {
     }
     stage('Build and Push Docker Image') {
       environment {
-        DOCKER_IMAGE = "BB/ultimate-cicd:${BUILD_NUMBER}"
+        DOCKER_IMAGE = "balaakash:${BUILD_NUMBER}"
         DOCKERFILE_LOCATION = "https://github.com/Balaakash56/java-maven-sonarqube-jenkins.git/Dockerfile"
         REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
