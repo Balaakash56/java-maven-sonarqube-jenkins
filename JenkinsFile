@@ -27,14 +27,14 @@ pipeline {
       environment {
         DOCKER_IMAGE = "balaakash:${env.BUILD_NUMBER}"
         DOCKERFILE_LOCATION = "Dockerfile"
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
       }
       steps {
-        script {
-          sh 'docker build -t ${DOCKER_IMAGE} -f ${DOCKERFILE_LOCATION} .'
-          def dockerImage = docker.image("${DOCKER_IMAGE}")
-          docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
-            dockerImage.push()
+        withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+          script {
+            sh 'docker build -t ${DOCKER_IMAGE} -f ${DOCKERFILE_LOCATION} .'
+            sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+            sh 'docker push ${DOCKER_IMAGE}'
+            sh 'docker logout'
           }
         }
       }
